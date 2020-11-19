@@ -123,6 +123,9 @@ class DBInterface:
     def delCab(self):
         self.cursor.execute("SELECT * FROM CABHUB;")
         results = self.cursor.fetchall()
+        if len(results) == 0:
+            print("Currently, there is no data!\n Insert some data first!")
+            return
         currentVCodes = [row[0] for row in results]
 
         print("Current Data:\n\n")
@@ -140,6 +143,7 @@ class DBInterface:
                 tablefmt="fancy_grid",
             )
         )
+        print("\n\n")
 
         while True:
             delVcode = str(input("Enter the VCode for the Cab to be deleted: "))
