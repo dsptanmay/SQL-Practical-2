@@ -2,7 +2,7 @@ import questionary as qr
 from tabulate import tabulate
 import os, sys
 import mysql.connector as ms
-
+import pretty_errors
 
 class DBInterface:
     def __init__(self) -> None:
