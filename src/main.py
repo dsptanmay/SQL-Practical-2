@@ -72,7 +72,7 @@ class DBInterface:
             elif action == choices[3]:
                 self.showAllSpecific()
             elif action == choices[4]:
-                print("Exiting the program...")
+                print("[u]Exiting the program...[/u]")
                 exit(0)
             else:
                 print("Error in choosing action!")
