@@ -1,8 +1,11 @@
-import questionary as qr
-from tabulate import tabulate
-import os, sys
+import os
+import sys
+
 import mysql.connector as ms
 import pretty_errors
+import questionary as qr
+from tabulate import tabulate
+
 
 class DBInterface:
     def __init__(self) -> None:
