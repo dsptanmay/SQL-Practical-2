@@ -1,10 +1,14 @@
 import os
 import sys
 
-import mysql.connector as ms
 import pretty_errors
+import pymysql as sql
 import questionary as qr
 from tabulate import tabulate
+
+from rich import print
+
+pretty_errors.activate()
 
 
 class DBInterface:
@@ -20,15 +24,23 @@ class DBInterface:
             "Enter the username for MySQL:", default="tanmay03", qmark=">>>"
         ).ask()
         password = qr.password("Enter the password for MySQL:", qmark=">>>").ask()
-        database = qr.text("Enter the name of the database:", qmark=">>>").ask()
         try:
-            self.db = db = ms.connect(
+            sql.connect(host="localhost", user=username, password=password)
+        except sql.Error as e:
+            print("Credentials are wrong!")
+            print(e)
+            exit()
+        else:
+            database = qr.text("Enter the name of the database:", qmark=">>>").ask()
+
+        try:
+            self.db = db = sql.connect(
                 host="localhost",
                 user=username,
                 password=password,
                 database=database,
             )
-        except ms.Error as e:
+        except sql.Error as e:
             print(e)
             exit()
         else:
@@ -113,8 +125,8 @@ class DBInterface:
         toBeIns = (Vcode, VehicleName, Make, cabColor, capacityCab, chargesCab)
         print(toBeIns)
         try:
-            self.cursor.execute(query)
-        except ms.Error as e:
+            self.cursor.execute(query=query)
+        except sql.Error as e:
             print(e)
             print("Error in Inserting Data!")
             return
@@ -127,7 +139,8 @@ class DBInterface:
         self.cursor.execute("SELECT * FROM CABHUB;")
         results = self.cursor.fetchall()
         if len(results) == 0:
-            print("Currently, there is no data!\n Insert some data first!")
+            print("Currently, there is no data!\n")
+            print("Insert some data first!")
             return
         currentVCodes = [row[0] for row in results]
 
@@ -162,7 +175,7 @@ class DBInterface:
 
         try:
             self.cursor.execute(query)
-        except ms.Error as e:
+        except sql.Error as e:
             print(e)
             print("Error in deleting record!")
             return
